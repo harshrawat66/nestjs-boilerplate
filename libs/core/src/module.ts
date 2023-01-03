@@ -1,6 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaClient } from '@prisma/client';
 import config from 'config';
+import { PrismaConnector } from './prisma';
 
 @Global()
 @Module({
@@ -10,7 +12,7 @@ import config from 'config';
       load: config,
     }),
   ],
-  providers: [],
-  exports: [],
+  providers: [PrismaClient, PrismaConnector],
+  exports: [PrismaConnector],
 })
 export class CoreModule {}
