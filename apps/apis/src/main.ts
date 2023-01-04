@@ -9,6 +9,7 @@ import helmet from 'helmet';
 import { TimeoutInterceptor } from '@app/core/intercepters';
 import { ValidationPipe } from '@nestjs/common';
 import { Cluster } from './cluster';
+import { PrismaConnector } from '@app/core/prisma';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -40,6 +41,10 @@ async function bootstrap() {
 
   // timeout intercepter configuration
   app.useGlobalInterceptors(new TimeoutInterceptor());
+
+  // prisma shutdown hook configuration
+  const prismaConnector = app.get(PrismaConnector);
+  await prismaConnector.enableShutdownHooks(app);
 
   // get port from config
   const config = app.get(ConfigService);

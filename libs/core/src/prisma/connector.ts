@@ -1,18 +1,15 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaClient, User } from '@prisma/client';
+import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class PrismaConnector {
-  private prismaClient: PrismaClient;
-  constructor() {
-    this.prismaClient = new PrismaClient();
+export class PrismaConnector extends PrismaClient implements OnModuleInit {
+  async onModuleInit() {
+    await this.$connect();
   }
 
-  async getAll(model: string): Promise<User[]> {
-    try {
-      return this.prismaClient[model].findMany();
-    } catch (e) {
-      throw new HttpException(`${model} not found`, HttpStatus.NOT_FOUND);
-    }
+  async enableShutdownHooks(app: INestApplication) {
+    this.$on('beforeExit', async () => {
+      await app.close();
+    });
   }
 }
