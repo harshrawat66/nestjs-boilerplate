@@ -1,12 +1,14 @@
-import { PrismaConnector } from '@app/core/prisma';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { USER_MODULE_CONST } from '../constants';
+import { IUserDatabaseConnector } from '../db/interface';
 import { TestDto } from '../dtos/test';
 
 @Injectable()
 export class UserService {
-  constructor(private prismaClient: PrismaConnector) {}
+  constructor(@Inject(USER_MODULE_CONST.USER_CONNECTOR) private userRepo: IUserDatabaseConnector) {}
   async getHello(params: TestDto): Promise<void> {
-    console.log(await this.prismaClient.user.findMany());
-    // await new Promise((r) => setTimeout(r, 2000));
-  }
+    const user = await this.userRepo.findMany();
+    console.log({ params });
+    console.log({ user });
+    }
 }
