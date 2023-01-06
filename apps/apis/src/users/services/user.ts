@@ -10,5 +10,5 @@ export class UserService {
     const user = await this.userRepo.findMany();
     console.log({ params });
     console.log({ user });
-  }
+    }
 }
