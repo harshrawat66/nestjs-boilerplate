@@ -3,7 +3,7 @@ import { isArray } from 'class-validator';
 export class Transformer {
   async shapeOf<T>(obj: T | T, keys: string[]): Promise<Array<Partial<T>> | Partial<T>> {
     if (isArray(obj)) {
-      return this.handleArray(obj as T[], keys);
+      return this.handleArray(obj as unknown as T[], keys);
     }
     return this.handleObject(obj, keys);
   }
