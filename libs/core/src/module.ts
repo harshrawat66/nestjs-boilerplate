@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import config from 'config';
 import { PrismaConnector } from './prisma';
 import { BaseConnector } from './prisma/baseConnector';
+import { Transformer } from './transformer';
 
 @Global()
 @Module({
@@ -13,7 +14,7 @@ import { BaseConnector } from './prisma/baseConnector';
       load: config,
     }),
   ],
-  providers: [PrismaClient, PrismaConnector, BaseConnector],
-  exports: [PrismaConnector, BaseConnector],
+  providers: [PrismaClient, PrismaConnector, BaseConnector, Transformer],
+  exports: [PrismaConnector, BaseConnector, Transformer],
 })
 export class CoreModule {}

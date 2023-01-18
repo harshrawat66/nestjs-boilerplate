@@ -6,12 +6,12 @@ import { IBaseConnector } from '../Interfaces';
 @Injectable()
 export class BaseConnector implements IBaseConnector {
   protected client: PrismaConnector;
-  protected model;
+  protected model: Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation>;
   constructor() {
     this.client = new PrismaConnector();
   }
 
-  getClient(tableName): Promise<Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation>> {
+  getClient(tableName): Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation> {
     return this.client[tableName];
   }
 }
