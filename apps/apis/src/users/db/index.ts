@@ -4,7 +4,7 @@ import { User } from '@prisma/client';
 import { IUserDatabaseConnector } from './interface';
 
 @Injectable()
-export class UserDatabaseConnector extends BaseConnector implements IUserDatabaseConnector {
+export class UserDatabaseConnector extends BaseConnector<User> implements IUserDatabaseConnector {
   constructor() {
     super();
     this.model = this.getClient('user');

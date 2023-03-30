@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './module';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -10,6 +10,7 @@ import { TimeoutInterceptor } from '@app/core/intercepters';
 import { ValidationPipe } from '@nestjs/common';
 import { Cluster } from './cluster';
 import { PrismaConnector } from '@app/core/prisma';
+import { ExceptionFilter } from '@app/core/filters';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -38,6 +39,10 @@ async function bootstrap() {
       transformOptions: { excludeExtraneousValues: true },
     }),
   );
+
+  // filters
+  const httpAdapter = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new ExceptionFilter(httpAdapter));
 
   // timeout intercepter configuration
   app.useGlobalInterceptors(new TimeoutInterceptor());

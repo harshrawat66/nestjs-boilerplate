@@ -1,5 +1,5 @@
-import { PrismaModelFns } from './common';
+import { PrismaModelActions } from './common';
 
-export interface IBaseConnector {
-  getClient(tableName: string): PrismaModelFns;
+export interface IBaseConnector<T> {
+  getClient(tableName: string): PrismaModelActions<T>;
 }
