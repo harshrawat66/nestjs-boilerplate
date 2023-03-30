@@ -1,17 +1,16 @@
 import { PrismaConnector } from '@app/core/prisma';
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import { IBaseConnector } from '../Interfaces';
+import { IBaseConnector, PrismaModelActions } from '../Interfaces';
 
 @Injectable()
-export class BaseConnector implements IBaseConnector {
+export class BaseConnector<T> implements IBaseConnector<T> {
   protected client: PrismaConnector;
-  protected model: Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation>;
+  protected model: PrismaModelActions<T>;
   constructor() {
     this.client = new PrismaConnector();
   }
 
-  getClient(tableName): Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation> {
+  getClient(tableName): PrismaModelActions<T> {
     return this.client[tableName];
   }
 }
